@@ -72,6 +72,7 @@ void List<T>::add_at(const int pos, const T _data) {
             }
         }
     }
+    size++;
 }
 
 template<class T>
@@ -85,6 +86,7 @@ void List<T>::append(T _data) {
         tail->next=newNode;
         tail=newNode;
     }
+    size++;
 }
 
 template<class T>
@@ -98,6 +100,7 @@ void List<T>::push(T _data) {
         newNode->next=head;
         head=newNode;
     }
+    size++;
 }
 
 template<class T>
@@ -117,6 +120,7 @@ void List<T>::remove(T _data) {
             head = temp->next;
             temp->next = nullptr;
             delete temp;
+            size--;
         }
         else if (temp == tail) {
             remove_last();
@@ -136,6 +140,7 @@ void List<T>::remove_last() {
     delete tail;
     step->next = nullptr;
     tail = step;
+    size--;
 }
 
 template<class T>
@@ -147,6 +152,7 @@ void List<T>::remove_middle(Node* _temp) {
     }
     step->next=_temp->next;
     delete _temp;
+    size--;
 }
 
 
