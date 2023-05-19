@@ -1,5 +1,7 @@
 #ifndef SHUNTING_YARD_LINKED_LIST_H
 #define SHUNTING_YARD_LINKED_LIST_H
+#include <iostream>
+#include <stdexcept>
 
 template<class T>
 class List{
@@ -12,15 +14,8 @@ class List{
     Node* head;
     Node* tail;
     unsigned int size;
+    void remove_middle(Node* _temp);
     void remove_last();
-    void remove_middle(Node& _temp);
-public:
-    List();
-    void add_at(int, T);
-    void append(T);
-    void push(T);
-    void remove(T);
-    bool empty();
     Node* find(T _data) {
         Node* step=head;
         while (step&&step->data!=_data) {
@@ -30,7 +25,13 @@ public:
             return nullptr;
         return step;
     }
-
+public:
+    List();
+    void add_at(int, T);
+    void append(T);
+    void push(T);
+    void remove(T _data);
+    bool empty();
 };
 
 template<class T>
@@ -109,44 +110,44 @@ bool List<T>::empty() {
 template<class T>
 void List<T>::remove(T _data) {
     Node* temp = find(_data);
-    if(!temp)
+    if (!temp)
         throw std::range_error("No element to delete!");
-    switch(temp) {
-        case head:
-            head=temp->next;
+    else {
+        if (temp == head) {
+            head = temp->next;
             temp->next = nullptr;
             delete temp;
-            break;
-        case tail:
+        }
+        else if (temp == tail) {
             remove_last();
-            break;
-        default:
-            remove_middle();
-
+        }
+        else {
+            remove_middle(&*temp);
+        }
     }
 }
 
 template<class T>
 void List<T>::remove_last() {
-    Node* step=head;
-    while (!step->next->next) {
-        step=step->next;
+    Node* step = head;
+    while (step->next != tail) {
+        step = step->next;
     }
     delete tail;
-    step->next=nullptr;
-    tail=step;
+    step->next = nullptr;
+    tail = step;
 }
 
 template<class T>
-void List<T>::remove_middle(Node& _temp) {
+void List<T>::remove_middle(Node* _temp) {
     Node* step=head;
     while (step->next!=_temp)
     {
         step=step->next;
     }
-    step->next=_temp.next;
+    step->next=_temp->next;
     delete _temp;
-    _temp = nullptr;
 }
+
 
 #endif //SHUNTING_YARD_LINKED_LIST_H
