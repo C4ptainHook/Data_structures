@@ -34,6 +34,26 @@ class Dlist{
         tail = nullptr;
         size = 0;
     }
+    class iterator {
+        Node *current_ptr = nullptr;
+        const Dlist *o_list = nullptr;
+    public:
+        using difference_type = std::ptrdiff_t;
+        using iterator_category = std::bidirectional_iterator_tag;
+        iterator() = default;
+        iterator(Node* ptr, const Dlist* gen);
+
+        iterator& operator++();
+        iterator operator++(int);
+        iterator& operator--();
+        iterator operator--(int);
+
+        T& operator*() const;
+        T* operator->() const;
+
+        friend class Dlist;
+    };
+    public:
     bool empty();
     void append(T);
     void push_back(T);
@@ -42,7 +62,19 @@ class Dlist{
     void pop_front();
     void pop_back();
     void remove(T_size);
+    Dlist<T>::iterator begin();
+    Dlist<T>::iterator end();
 };
+
+template<class T>
+typename Dlist<T>::iterator Dlist<T>::begin() {
+    return Dlist::iterator(head, this);
+}
+
+template<class T>
+typename Dlist<T>::iterator  Dlist<T>::end() {
+    return Dlist::iterator(tail->next, this);
+}
 
 template<class T>
 bool Dlist<T>::empty() {
