@@ -15,18 +15,18 @@ class Dlist{
         explicit Node(T _data): data(_data), next(nullptr), prev(nullptr){}
         ~Node() {delete next, prev;}
     };
-    Node* head;
-    Node* tail;
+    Node* head;       //pointer to the first node of the list
+    Node* tail;       //pointer to the last node of the list
     unsigned int size;
-    void create_list(T);
-    bool close_to_tail(T_size);
-    void add_before_ft(T, T_size);
-    void add_before_fh(T, T_size);
-    void add_after_ft(T, T_size);
-    void add_after_fh(T, T_size);
-    void destroy_list();
-    void remove_ft(T);
-    void remove_fh(T);
+    void create_list(T); //creates first single node if no nodes have existed before or all were deleted
+    bool close_to_tail(T_size); //checks if given by user index of element is closer to the tail. Helps to reduce complexity.
+    void add_before_ft(T, T_size); //inserts new node before given node if given node position is in the right part of the list (FT = FROM TAIL)
+    void add_before_fh(T, T_size); //inserts new node before given node if given node position is in the left part of the list (FH = FROM HEAD)
+    void add_after_ft(T, T_size); //inserts new node after given node if given node position is in the right part of the list
+    void add_after_fh(T, T_size); //inserts new node after given node if given node position is in the left part of the list
+    void destroy_list(); //delete element if there is only one in the whole list
+    void remove_ft(T); //removes given node if given node position is in the right part of the list (FT = FROM TAIL)
+    void remove_fh(T); //removes given node if given node position is in the right part of the list (FH = FROM HEAD)
 
     public:
     Dlist(){
@@ -66,7 +66,7 @@ class Dlist{
     Dlist<T>::iterator begin();
     Dlist<T>::iterator end();
 };
-
+//-------------------------------------------- Below are implementations of iterator methode`s
 template<class T>
 Dlist<T>::iterator::iterator(Node* ptr, const Dlist* gen) {
     current_ptr = ptr;
@@ -128,7 +128,7 @@ template<class T>
 bool Dlist<T>::iterator::operator!=(const Dlist::iterator& other) const {
     return current_ptr!=other.current_ptr;
 }
-
+//------------------------------------------------ Below are Dlist methode`s implementations
 template<class T>
 bool Dlist<T>::empty() {
    if(!head)
