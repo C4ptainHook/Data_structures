@@ -59,7 +59,7 @@ class Dlist{
     };
     public:
     bool empty(); //returns true if list is totally empty
-    void append(T); //add new element to the beginning of the list
+    void push_front(T); //add new element to the beginning of the list
     void push_back(T); //add new element to the end of the list
     void add_before(T, T_size); //add new element before specified position
     void add_after(T, T_size); //add new element after specified position
@@ -155,7 +155,7 @@ void Dlist<T>::create_list(T _data) {
 }
 
 template<class T>
-void Dlist<T>::append(T _data) {
+void Dlist<T>::push_front(T _data) {
     if(empty()) {
         create_list(_data);
         return;}
@@ -187,7 +187,7 @@ void Dlist<T>::add_before(T _data, T_size pos) {
         throw std::range_error("Cannot insert before non-exist member!");
     }
     else if(!pos) {
-        append(_data);
+        push_front(_data);
     } else if(close_to_tail(pos)) {
         add_before_ft(_data, pos);}
     else{
@@ -206,6 +206,7 @@ void Dlist<T>::add_before_ft(T _data, T_size pos) {
     newNode->prev=step->prev;
     step->prev=newNode;
     newNode->next=step;
+    ++size;
 }
 
 template<class T>
@@ -219,6 +220,7 @@ void Dlist<T>::add_before_fh(T _data, T_size pos) {
     newNode->prev=step->prev;
     step->prev=newNode;
     newNode->next=step;
+    ++size;
 }
 
 template<class T>
@@ -244,6 +246,7 @@ void Dlist<T>::add_after_ft(T _data, T_size pos) {
     newNode->next=step->next;
     newNode->prev=step;
     step->next=newNode;
+    ++size;
 }
 
 template<class T>
@@ -257,6 +260,7 @@ void Dlist<T>::add_after_fh(T _data, T_size pos) {
     newNode->next=step->next;
     newNode->prev=step;
     step->next=newNode;
+    ++size;
 }
 
 template<class T>
@@ -315,6 +319,7 @@ void Dlist<T>::remove_ft(T pos) {
     step->next = nullptr;
     step->prev = nullptr;
     delete step;
+    --size;
 }
 
 template<class T>
@@ -328,6 +333,7 @@ void Dlist<T>::remove_fh(T pos) {
     step->next = nullptr;
     step->prev = nullptr;
     delete step;
+    --size;
 }
 
 #endif //ASD_LAB6_HASH_DLIST_H
