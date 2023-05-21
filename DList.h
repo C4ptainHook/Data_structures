@@ -25,6 +25,8 @@ class Dlist{
     void add_after_ft(T, T_size);
     void add_after_fh(T, T_size);
     void destroy_list();
+    void remove_ft(T);
+    void remove_fh(T);
 
     public:
     Dlist(){
@@ -38,6 +40,8 @@ class Dlist{
     void add_before(T, T_size);
     void add_after(T, T_size);
     void pop_front();
+    void pop_back();
+    void remove(T_size);
 };
 
 template<class T>
@@ -177,6 +181,21 @@ void Dlist<T>::pop_front() {
         temp->next = nullptr;
         delete temp;
         head->prev = nullptr;
+        --size;
+    }
+}
+
+template<class T>
+void Dlist<T>::pop_back() {
+    if(empty()) throw std::domain_error("Pop from from empty list");
+    else if(size==1) {destroy_list();}
+    else{
+        Node* temp = tail;
+        tail=temp->prev;
+        temp->prev = nullptr;
+        delete temp;
+        tail->next = nullptr;
+        --size;
     }
 }
 
@@ -185,6 +204,42 @@ void Dlist<T>::destroy_list() {
         delete head, tail;
         head=tail=nullptr;
         --size;
+}
+
+template<class T>
+void Dlist<T>::remove(T_size pos) {
+    if(pos>=size) throw std::domain_error("Can not remove non-existent member");
+    else if(!pos) pop_front();
+    else if(pos==size-1) pop_back();
+    else if(close_to_tail(pos)) remove_ft(pos);
+    else remove_fh(pos);
+}
+
+template<class T>
+void Dlist<T>::remove_ft(T pos) {
+    Node* step = tail;
+    for (T_size i = size-1; i > pos ; --i) {
+        step=step->prev;
+    }
+
+    step->prev->next=step->next;
+    step->next->prev=step->prev;
+    step->next = nullptr;
+    step->prev = nullptr;
+    delete step;
+}
+
+template<class T>
+void Dlist<T>::remove_fh(T pos) {
+    Node* step = head;
+    for (T_size i = 0; i < pos; ++i) {
+        step=step->next;
+    }
+    step->prev->next=step->next;
+    step->next->prev=step->prev;
+    step->next = nullptr;
+    step->prev = nullptr;
+    delete step;
 }
 
 #endif //ASD_LAB6_HASH_DLIST_H
