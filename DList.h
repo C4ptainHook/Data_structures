@@ -38,18 +38,19 @@ class Dlist{
         Node *current_ptr = nullptr;
         const Dlist *o_list = nullptr;
     public:
-        using difference_type = std::ptrdiff_t;
-        using iterator_category = std::bidirectional_iterator_tag;
         iterator() = default;
-        iterator(Node* ptr, const Dlist* gen);
+        iterator(Node*, const Dlist*);
 
-        iterator& operator++();
-        iterator operator++(int);
-        iterator& operator--();
-        iterator operator--(int);
+        const iterator& operator++();
+        const iterator operator++(int);
+        const iterator& operator--();
+        const iterator operator--(int);
 
         T& operator*() const;
         T* operator->() const;
+
+        bool operator==(const iterator&) const;
+        bool operator!=(const iterator&) const;
 
         friend class Dlist;
     };
@@ -67,6 +68,12 @@ class Dlist{
 };
 
 template<class T>
+Dlist<T>::iterator::iterator(Node* ptr, const Dlist* gen) {
+    current_ptr = ptr;
+    o_list = gen;
+}
+
+template<class T>
 typename Dlist<T>::iterator Dlist<T>::begin() {
     return Dlist::iterator(head, this);
 }
@@ -74,6 +81,52 @@ typename Dlist<T>::iterator Dlist<T>::begin() {
 template<class T>
 typename Dlist<T>::iterator  Dlist<T>::end() {
     return Dlist::iterator(tail->next, this);
+}
+
+template<class T>
+const typename Dlist<T>::iterator&  Dlist<T>::iterator::operator++() {
+    current_ptr = this->current_ptr->next;
+    return *this;
+}
+
+template<class T>
+const typename Dlist<T>::iterator  Dlist<T>::iterator::operator++(int) {
+    iterator prev(*this);
+    ++(*this);
+    return prev;
+}
+
+template<class T>
+const typename Dlist<T>::iterator& Dlist<T>::iterator::operator--() {
+    current_ptr ? this->current_ptr->prev : o_list->tail;
+    return *this;
+}
+
+template<class T>
+const typename Dlist<T>::iterator Dlist<T>::iterator::operator--(int) {
+    iterator prev(*this);
+    --(*this);
+    return prev;
+}
+
+template<class T>
+T& Dlist<T>::iterator::operator*() const {
+    return current_ptr->data;
+}
+
+template<class T>
+T* Dlist<T>::iterator::operator->() const {
+    return &(current_ptr->data);
+}
+
+template<class T>
+bool Dlist<T>::iterator::operator==(const Dlist::iterator& other) const {
+    return current_ptr==other.current_ptr;
+}
+
+template<class T>
+bool Dlist<T>::iterator::operator!=(const Dlist::iterator& other) const {
+    return current_ptr!=other.current_ptr;
 }
 
 template<class T>
