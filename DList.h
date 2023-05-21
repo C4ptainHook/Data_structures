@@ -18,6 +18,8 @@ class Dlist{
     Node* head;       //pointer to the first node of the list
     Node* tail;       //pointer to the last node of the list
     unsigned int size;
+
+    //Supporting functions which user cannot access:
     void create_list(T); //creates first single node if no nodes have existed before or all were deleted
     bool close_to_tail(T_size); //checks if given by user index of element is closer to the tail. Helps to reduce complexity.
     void add_before_ft(T, T_size); //inserts new node before given node if given node position is in the right part of the list (FT = FROM TAIL)
@@ -29,6 +31,7 @@ class Dlist{
     void remove_fh(T); //removes given node if given node position is in the right part of the list (FH = FROM HEAD)
 
     public:
+    //Constcuctor for list
     Dlist(){
         head = nullptr;
         tail = nullptr;
@@ -55,16 +58,16 @@ class Dlist{
         friend class Dlist;
     };
     public:
-    bool empty();
-    void append(T);
-    void push_back(T);
-    void add_before(T, T_size);
-    void add_after(T, T_size);
-    void pop_front();
-    void pop_back();
-    void remove(T_size);
-    Dlist<T>::iterator begin();
-    Dlist<T>::iterator end();
+    bool empty(); //returns true if list is totally empty
+    void append(T); //add new element to the beginning of the list
+    void push_back(T); //add new element to the end of the list
+    void add_before(T, T_size); //add new element before specified position
+    void add_after(T, T_size); //add new element after specified position
+    void pop_front(); //erase element from the beginning of the list
+    void pop_back(); //erase element from the end of the list
+    void remove(T_size); //removes element at given position
+    Dlist<T>::iterator begin(); //marks start point of the list
+    Dlist<T>::iterator end(); //marks point after the tail of the list (Absolute end)
 };
 //-------------------------------------------- Below are implementations of iterator methode`s
 template<class T>
