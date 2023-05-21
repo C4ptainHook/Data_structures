@@ -24,6 +24,7 @@ class Dlist{
     void add_before_fh(T, T_size);
     void add_after_ft(T, T_size);
     void add_after_fh(T, T_size);
+    void destroy_list();
 
     public:
     Dlist(){
@@ -36,6 +37,7 @@ class Dlist{
     void push_back(T);
     void add_before(T, T_size);
     void add_after(T, T_size);
+    void pop_front();
 };
 
 template<class T>
@@ -165,5 +167,24 @@ void Dlist<T>::add_after_fh(T _data, T_size pos) {
     step->next=newNode;
 }
 
+template<class T>
+void Dlist<T>::pop_front() {
+    if(empty()) throw std::domain_error("Pop from from empty list");
+    else if(size==1) {destroy_list();}
+    else{
+        Node* temp = head;
+        head = temp->next;
+        temp->next = nullptr;
+        delete temp;
+        head->prev = nullptr;
+    }
+}
+
+template<class T>
+void Dlist<T>::destroy_list() {
+        delete head, tail;
+        head=tail=nullptr;
+        --size;
+}
 
 #endif //ASD_LAB6_HASH_DLIST_H
