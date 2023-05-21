@@ -24,6 +24,7 @@ class Dlist{
     void add_before_fh(T, T_size);
     void add_after_ft(T, T_size);
     void add_after_fh(T, T_size);
+
     public:
     Dlist(){
         head = nullptr;
@@ -131,13 +132,10 @@ void Dlist<T>::add_after(T _data, T_size pos) {
     if(empty()&&pos!=0)
     {
         throw std::range_error("Cannot insert after non-exist member!");
-    }
-    else if(!pos) {
-        push_back(_data);
     } else if(close_to_tail(pos)) {
         add_after_ft(_data, pos);}
     else{
-        add_before_fh(_data, pos);
+        add_after_fh(_data, pos);
     }
 }
 
@@ -148,7 +146,7 @@ void Dlist<T>::add_after_ft(T _data, T_size pos) {
         step=step->prev;
     }
     Node* newNode = new Node(_data);
-    step->prev=newNode;
+    step->next->prev=newNode;
     newNode->next=step->next;
     newNode->prev=step;
     step->next=newNode;
@@ -161,7 +159,7 @@ void Dlist<T>::add_after_fh(T _data, T_size pos) {
         step=step->prev;
     }
     Node* newNode = new Node(_data);
-    step->prev=newNode;
+    step->next->prev=newNode;
     newNode->next=step->next;
     newNode->prev=step;
     step->next=newNode;
